@@ -1,5 +1,17 @@
 <ion-view view-title="Nouveau Parcours">
     <ion-content>
-        Debuter parcours
+        <form data-ng-submit="doParcours()" class="gem-form">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="text" placeholder="Nom Parcours">
+                </label>
+                <label class="item item-input">
+                    <input type="number" placeholder="Kilomètre">
+                </label>
+            </div>
+            <button class="button button-block button-positive" type="submit">
+                Débuter parcours
+            </button>
+        </form>
     </ion-content>
 </ion-view>
