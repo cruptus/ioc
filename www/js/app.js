@@ -25,6 +25,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
+
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
 
@@ -35,55 +36,27 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     controller: 'AppCtrl'
   })
 
-  .state('app.nouv-parcours', {
-    url: '/nouv-parcours',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/nouv-parcours.html',
-          controller: 'InitializeNewParcoursCtrl'
-      }
-    }
-  })
-
-  .state('app.parcours', {
+  .state('app.perso', {
       url: '/parcours',
       views: {
           'menuContent': {
               templateUrl: 'templates/parcours.html',
-              controller: 'ParcoursCtrl'
+              controller: 'PersoCtrl'
           }
       }
   })
 
-  .state('app.mes-parcours', {
-      url: '/mes-parcours',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/mes-parcours.html',
-          controller: 'MesParcoursCtrl'
-        }
-      }
-    })
-
-    .state('app.tableau', {
-        url: '/tableau',
-        views: {
-          'menuContent': {
-            templateUrl: 'templates/tableau.html'
-          }
-        }
-    })
-
-    .state('app.accueil', {
+  .state('app.accueil', {
       url: '/accueil',
       views: {
         'menuContent': {
-          templateUrl: 'templates/accueil.html'
+          templateUrl: 'templates/accueil.html',
+            controller: 'AccueilCtrl'
         }
       }
-    })
+  })
 
-      .state('app.test', {
+    .state('app.test', {
         url: '/test',
         views: {
           'menuContent': {
@@ -91,21 +64,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             controller: 'TestCtrl'
           }
         }
-      })
-    //.state('app.start', {
-    //  url: '/start',
-    //  views:  'templates/start.html'
-    //});
+    })
 
-  //.state('app.single', {
-  //  url: '/playlists/:playlistId',
-  //  views: {
-  //    'menuContent': {
-  //      templateUrl: 'templates/playlist.html',
-  //      controller: 'PlaylistCtrl'
-  //    }
-  //  }
-  //});
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/accueil');
 });
