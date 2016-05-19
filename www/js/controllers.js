@@ -45,8 +45,15 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('AccueilCtrl', function($scope) {
+.controller('AccueilCtrl', function($scope, $rootScope, $ionicPlatform, $cordovaBatteryStatus) {
 
+    $rootScope.$on('$cordovaBatteryStatus:status', function(event, args){
+      if(args.isPlugged){
+        alert(args.level);
+      } else {
+        alert(args.level);
+      }
+    })
 })
 
 .controller('TestCtrl', function($scope) {
