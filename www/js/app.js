@@ -39,9 +39,20 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/nouv-parcours',
     views: {
       'menuContent': {
-        templateUrl: 'templates/nouv-parcours.html'
+        templateUrl: 'templates/nouv-parcours.html',
+          controller: 'InitializeNewParcoursCtrl'
       }
     }
+  })
+
+  .state('app.parcours', {
+      url: '/parcours',
+      views: {
+          'menuContent': {
+              templateUrl: 'templates/parcours.html',
+              controller: 'ParcoursCtrl'
+          }
+      }
   })
 
   .state('app.mes-parcours', {
