@@ -48,9 +48,8 @@ angular.module('starter.controllers', [])
     { title: 'Cannes Marseille', id: 3, desc: '10km bla bla', iti: 'https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d23103.36965102806!2d7.021271211090599!3d43.628998877129106!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x12cc2958679849bd%3A0x4ad705bc325c2295!2sValbonne!3m2!1d43.64152!2d7.009186!4m5!1s0x12cc2b2e80bac34d%3A0x4c146f1105756459!2sInstitut+Universitaire+de+Technologie%2C+650+Route+des+Colles%2C+06560+Valbonne!3m2!1d43.616757!2d7.0711059!5e0!3m2!1sfr!2sfr!4v1462781932809' }
   ];
 })
-
-    .controller('TestCtrl', function($scope) {
-
-    })
+.controller('TestCtrl', function($scope) {
+  le.initialize();
+});
 //.controller('PlaylistCtrl', function($scope, $stateParams) {
 //});

@@ -39,7 +39,7 @@ var bluefruit = {
     rxCharacteristic: '6e400003-b5a3-f393-e0a9-e50e24dcca9e'  // receive is from the phone's perspective
 };
 
-var app = {
+var le = {
     initialize: function() {
         this.bindEvents();
         detailPage.hidden = true;
@@ -52,14 +52,14 @@ var app = {
         deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
-        app.refreshDeviceList();
+        le.refreshDeviceList();
     },
     refreshDeviceList: function() {
         deviceList.innerHTML = ''; // empties the list
         if (cordova.platformId === 'android') { // Android filtering is broken
-            ble.scan([], 5, app.onDiscoverDevice, app.onError);
+            ble.scan([], 5, le.onDiscoverDevice, le.onError);
         } else {
-            ble.scan([bluefruit.serviceUUID], 5, app.onDiscoverDevice, app.onError);
+            ble.scan([bluefruit.serviceUUID], 5, le.onDiscoverDevice, le.onError);
         }
     },
     onDiscoverDevice: function(device) {
@@ -75,17 +75,17 @@ var app = {
     connect: function(e) {
         var deviceId = e.target.dataset.deviceId,
             onConnect = function(peripheral) {
-                app.determineWriteType(peripheral);
+                le.determineWriteType(peripheral);
 
                 // subscribe for incoming data
-                ble.startNotification(deviceId, bluefruit.serviceUUID, bluefruit.rxCharacteristic, app.onData, app.onError);
+                ble.startNotification(deviceId, bluefruit.serviceUUID, bluefruit.rxCharacteristic, le.onData, le.onError);
                 sendButton.dataset.deviceId = deviceId;
                 disconnectButton.dataset.deviceId = deviceId;
                 resultDiv.innerHTML = "";
-                app.showDetailPage();
+                le.showDetailPage();
             };
 
-        ble.connect(deviceId, onConnect, app.onError);
+        ble.connect(deviceId, onConnect, le.onError);
     },
     determineWriteType: function(peripheral) {
         // Adafruit nRF8001 breakout uses WriteWithoutResponse for the TX characteristic
@@ -98,9 +98,9 @@ var app = {
         })[0];
 
         if (characteristic.properties.indexOf('WriteWithoutResponse') > -1) {
-            app.writeWithoutResponse = true;
+            le.writeWithoutResponse = true;
         } else {
-            app.writeWithoutResponse = false;
+            le.writeWithoutResponse = false;
         }
 
     },
@@ -124,7 +124,7 @@ var app = {
         var data = stringToBytes(messageInput.value);
         var deviceId = event.target.dataset.deviceId;
 
-        if (app.writeWithoutResponse) {
+        if (le.writeWithoutResponse) {
             ble.writeWithoutResponse(
                 deviceId,
                 bluefruit.serviceUUID,
@@ -143,7 +143,7 @@ var app = {
     },
     disconnect: function(event) {
         var deviceId = event.target.dataset.deviceId;
-        ble.disconnect(deviceId, app.showMainPage, app.onError);
+        ble.disconnect(deviceId, le.showMainPage, le.onError);
     },
     showMainPage: function() {
         mainPage.hidden = false;
