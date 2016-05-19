@@ -50,16 +50,14 @@ var le = {
         refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
         batterieButton.addEventListener('click', this.sendDataBatterie, false);
         horlogeButton.addEventListener('click', this.sendDataHorloge, false);
-        //sendButton.addEventListener('click', this.sendData, false);
-        //disconnectButton.addEventListener('touchstart', this.disconnect, false);
-        deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
+        deviceList.addEventListener('touchstart', this.connect, false);
     },
     onDeviceReady: function() {
         le.refreshDeviceList();
     },
     refreshDeviceList: function() {
-        deviceList.innerHTML = ''; // empties the list
-        if (cordova.platformId === 'android') { // Android filtering is broken
+        deviceList.innerHTML = '';
+        if (cordova.platformId === 'android') {
             ble.scan([], 5, le.onDiscoverDevice, le.onError);
         } else {
             ble.scan([bluefruit.serviceUUID], 5, le.onDiscoverDevice, le.onError);
