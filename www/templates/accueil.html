@@ -1,18 +1,21 @@
 <ion-view view-title="IUtility">
-  <ion-content>
-    <br>
-    <h3 class="title text-center">Accueil</h3>
-    <div class="card">
-      <div class="item item-text-wrap">
-        Veuillez choisir le mode de votre Arduino Bluetooth!
-      </div>
-    </div>
-    <button class="button button-full button-energized" data-ng-click="doBatterie()">
-      Batterie
-    </button>
-    <button class="button button-full button-assertive" data-ng-clickk="doHorloge()">
-      Horloge
-    </button>
-
-  </ion-content>
+    <ion-content>
+        <br>
+        <h3 class="title text-center">Accueil</h3>
+        <div id="mainPage">
+            <ul id="deviceList">
+            </ul>
+            <button class="button button-full button-assertive" id="refreshButton">Refresh</button>
+        </div>
+        <div id="detailPage">
+            <div class="card">
+              <div class="item item-text-wrap">
+                Veuillez choisir le mode de votre Arduino Bluetooth!
+              </div>
+            </div>
+            <button class="button button-full button-energized" id="batterieButton">Batterie</button>
+            <button class="button button-full button-balanced" id="horlogeButton">Horloge</button>
+            <button class="button button-full button-assertive" id="disconnectButton">Disconnect</button>
+        </div>
+    </ion-content>
 </ion-view>

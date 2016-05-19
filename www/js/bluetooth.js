@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /* global mainPage, deviceList, refreshButton */
-/* global detailPage, resultDiv, messageInput, sendButton, disconnectButton */
+/* global detailPage, resultDiv, messageInput, sendButton, disconnectButton, batterieButton, horlogeButton */
 /* global ble  */
 /* jshint browser: true , devel: true*/
 'use strict';
@@ -45,10 +45,13 @@ var le = {
         detailPage.hidden = true;
     },
     bindEvents: function() {
+
         document.addEventListener('deviceready', this.onDeviceReady, false);
         refreshButton.addEventListener('touchstart', this.refreshDeviceList, false);
-        sendButton.addEventListener('click', this.sendData, false);
-        disconnectButton.addEventListener('touchstart', this.disconnect, false);
+        batterieButton.addEventListener('click', this.sendDataBatterie, false);
+        horlogeButton.addEventListener('click', this.sendDataHorloge, false);
+        //sendButton.addEventListener('click', this.sendData, false);
+        //disconnectButton.addEventListener('touchstart', this.disconnect, false);
         deviceList.addEventListener('touchstart', this.connect, false); // assume not scrolling
     },
     onDeviceReady: function() {
@@ -79,9 +82,11 @@ var le = {
 
                 // subscribe for incoming data
                 ble.startNotification(deviceId, bluefruit.serviceUUID, bluefruit.rxCharacteristic, le.onData, le.onError);
-                sendButton.dataset.deviceId = deviceId;
+                //sendButton.dataset.deviceId = deviceId;
                 disconnectButton.dataset.deviceId = deviceId;
-                resultDiv.innerHTML = "";
+
+                horlogeButton.dataset.deviceId = deviceId;
+                batterieButton.dataset.deviceId = deviceId;
                 le.showDetailPage();
             };
 
@@ -109,19 +114,37 @@ var le = {
         resultDiv.innerHTML = resultDiv.innerHTML + "Received: " + bytesToString(data) + "<br/>";
         resultDiv.scrollTop = resultDiv.scrollHeight;
     },
-    sendData: function(event) { // send data to Arduino
+    sendDataHorloge: function(event) { // send data to Arduino
 
         var success = function() {
             console.log("success");
-            resultDiv.innerHTML = resultDiv.innerHTML + "Sent: " + messageInput.value + "<br/>";
-            resultDiv.scrollTop = resultDiv.scrollHeight;
         };
 
         var failure = function() {
             alert("Failed writing data to the bluefruit le");
         };
+        var ladate = new Date();
+        var hour, minute, seconde;
+        if(ladate.getHours() > 12) {
+            hour = ladate.getHours() - 12;
+            if (hour < 10)
+                hour = '0' + hour;
+        }else {
+            if(ladate.getHours() < 10)
+                hour = '0'+ladate.getHours();
+            else
+                hour = ladate.getHours();
+        }
 
-        var data = stringToBytes(messageInput.value);
+        if(ladate.getMinutes() < 10)
+            minute = '0'+ladate.getMinutes();
+        else
+            minute = ladate.getMinutes();
+        if(ladate.getSeconds() < 10)
+            seconde = '0' + ladate.getSeconds();
+        else
+            seconde = ladate.getSeconds();
+        var data = stringToBytes('t'+hour+minute+seconde+'!');
         var deviceId = event.target.dataset.deviceId;
 
         if (le.writeWithoutResponse) {
@@ -139,6 +162,42 @@ var le = {
                 data, success, failure
             );
         }
+
+    },sendDataBatterie: function(event) { // send data to Arduino
+
+
+        function checkbattery(){
+            window.addEventListener("batterystatus", onBatteryStatus, false);
+        }
+
+        function onBatteryStatus(info) {
+            var success = function() {
+                console.log("success");
+            };
+
+            var failure = function() {
+                alert("Failed writing data to the bluefruit le");
+            };
+            var data = stringToBytes('b'+info.level+'!');
+            var deviceId = event.target.dataset.deviceId;
+
+            if (le.writeWithoutResponse) {
+                ble.writeWithoutResponse(
+                    deviceId,
+                    bluefruit.serviceUUID,
+                    bluefruit.txCharacteristic,
+                    data, success, failure
+                );
+            } else {
+                ble.write(
+                    deviceId,
+                    bluefruit.serviceUUID,
+                    bluefruit.txCharacteristic,
+                    data, success, failure
+                );
+            }
+        }
+        checkbattery();
 
     },
     disconnect: function(event) {

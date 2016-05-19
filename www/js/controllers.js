@@ -42,20 +42,20 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PersoCtrl', function($scope) {
-
 })
 
 .controller('AccueilCtrl', function($scope, $rootScope, $ionicPlatform, $cordovaBatteryStatus) {
-
+    le.initialize();
+    /*
     $rootScope.$on('$cordovaBatteryStatus:status', function(event, args){
       if(args.isPlugged){
         alert(args.level);
       } else {
         alert(args.level);
       }
-    })
+    })*/
 })
 
 .controller('TestCtrl', function($scope) {
-  le.initialize();
+  //le.initialize();
 });
